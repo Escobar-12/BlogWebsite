@@ -27,7 +27,7 @@ export const register = async(req,res)=>
         const Access_token = jwt.sign(
             { id: newUser._id, name: newUser.name, role: newUser.role },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "15m" }
+            { expiresIn: "10m" }
         );
         const Refresh_token = jwt.sign(
             { id: newUser._id, name: newUser.name, role: newUser.role },
@@ -38,7 +38,7 @@ export const register = async(req,res)=>
         res.cookie("jwt", Refresh_token, { 
             httpOnly: true, 
             maxAge: 24 * 60 * 60 * 1000, 
-            sameSite: "None", 
+            sameSite: "Lax", 
             secure: false
         });
         
@@ -73,7 +73,7 @@ export const login = async(req,res)=>
         const Access_token = jwt.sign(
             { name: userFound.name,id: userFound._id, role: userFound.role },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "15m" }
+            { expiresIn: "10m" }
         );
         const Refresh_token = jwt.sign( 
             {name: userFound.name,id: userFound._id, role: userFound.role},
@@ -84,7 +84,7 @@ export const login = async(req,res)=>
         res.cookie("jwt", Refresh_token, { 
             httpOnly: true, 
             maxAge: 24 * 60 * 60 * 1000, 
-            sameSite: "None", 
+            sameSite: "Lax", 
             secure: false
         });
         
@@ -113,7 +113,7 @@ export const refresh = async (req, res) => {
         const newAccessToken = jwt.sign(
             { id: decoded.id, name: decoded.name, role: decoded.role },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "30s" }
+            { expiresIn: "10m" }
         );
 
         res.json({ 
@@ -133,7 +133,7 @@ export const logout = async (req, res) => {
         res.cookie("jwt", "", { 
             httpOnly: true, 
             expires: new Date(0),
-            sameSite: "None", 
+            sameSite: "Lax", 
             secure: false
         });
 

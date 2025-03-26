@@ -59,6 +59,7 @@ const Post = () => {
             finally {
                 setAuthorLoading(false);
             }
+            console.log(author)
         }
 
         getAuthor();
@@ -107,7 +108,7 @@ const Post = () => {
                     </div>
 
                     {/* Sidebar Section */}
-                    <div className='hidden lg:block px-2 rounded-lg h-max sticky top-10 max-w-1/4'>
+                    <div className='hidden lg:block px-2 rounded-lg h-max sticky top-5 max-w-1/4'>
                         {/*Categories*/}
                         <h2 className='smText text-lg font-semibold mb-4 text-gray-500'>Categories</h2>
                         <div className='smText flex flex-wrap gap-2 text-sm text-neutral-500 mb-10'>
@@ -120,13 +121,13 @@ const Post = () => {
                         </div>
 
                         <h2 className='smText text-lg font-semibold mb-4 text-gray-500'>Author</h2>
-                        <div className='flex items-center gap-4 mb-4'>
-                            <Image path={"userImg.jpeg"} className="w-14 h-14 rounded-full object-cover shadow-sm" />
-                            <div className='flex flex-col text-sm tracking-tight text-gray-700'>
-                                <Link className='font-semibold text-neutral-400 hover:underline'>{author.name ? author.name : "John Doe"}</Link>
-                                <p className="text-gray-500">Lorem ipsum dolor sit amet consectetur</p>
+                        <Link to={`/author/${author.authorId}`} className='flex max-h-30 gap-4 mb-4 cursor-pointer overflow-hidden '>
+                            <Image path={author.profile} className="w-14 h-14 rounded-full object-cover shadow-sm" />
+                            <div className='flex flex-col text-sm tracking-tight text-gray-700 text-ellipsis overflow-hidden'>
+                                <h1 className='font-semibold text-neutral-400 hover:underline'>{author.name ? author.name : "John Doe"}</h1>
+                                <p className="text-gray-500">{author.desc}</p>
                             </div>
-                        </div>
+                        </Link>
                         <div className='flex gap-2 mb-4'>
                             <FaSquareFacebook className='text-3xl rounded-xl'/>
                             <RiInstagramFill className='text-3xl'/>
@@ -134,7 +135,7 @@ const Post = () => {
 
                         <h2 className='smText text-lg font-semibold mb-4 text-gray-500 mt-10'>Action</h2>
 
-                        <MenuActions />
+                        <MenuActions postId={postData._id}/>
                         
                         <div className='mt-5'>
                             <PostSearch />

@@ -18,6 +18,7 @@ router.get("/me",verifyAccessToken, async (req, res)=>
         res.status(200).json({ 
             user: user.name, 
             roles: user.role,
+            profile: user.img
         });
         
     }

@@ -11,6 +11,7 @@ import Editor from './routes/EditorPage.jsx';
 import MainLayout from './layouts/MainLayout.jsx';
 import AddPost from './routes/AddPost.jsx';
 import Logout from './routes/Logout.jsx';
+import AuthorPage from './routes/AuthorPage.jsx';
 
 const Roles = {
   User: 2000,
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: 'posts', element:<PostList/>,},
       { path: 'posts/:slug', element: <Post /> },
+      {path: 'author/:authorId', element: <AuthorPage />},
       {
         path: 'admin',
         element: <RequireAuth allowedRoles={[Roles.Admin]} />,

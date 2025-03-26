@@ -6,10 +6,8 @@ import Features from "../components/Features";
 import PostList from "../components/PostList";
 import { CiSearch } from "react-icons/ci";
 
-
 const HomePage = ()=>
 {
-    const {auth,checkAuth} = useAuth();
     return(
         <section className="max-w-[1240px] mx-auto px-4 md:px-8 lg:px-16 w-full flex flex-col gap-4 mt-10 lg:mt-20">
             
@@ -45,6 +43,7 @@ const HomePage = ()=>
             <Categories/>
 
             <PostList/>
+
 
         </section>
     );

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -26,13 +26,15 @@ const userSchema = new mongoose.Schema({
     desc:
     {
         type:String,
-        required:true
     },
     savedPosts:{
-        type:[String],
+        type:[Schema.Types.ObjectId],
         default:[]
     },
-    
+    createdPosts:{
+        type: [Schema.Types.ObjectId],
+        default:[]
+    }
 },{timestamps:true})
 
 export const userModel = mongoose.models.UserInfo || mongoose.model("UserInfo",userSchema);

@@ -10,7 +10,7 @@ export const findAuthor = async (req,res) =>
             return res.status(404).json({ success: false, message: "Author not found" });
         }
         
-        res.status(200).json({name:user.name,desc:user.desc,profile:user.img});
+        res.status(200).json({name:user.name,desc:user.desc,profile:user.img,createdPosts:user.createdPosts,authorId:user._id});
     }
     catch (err) {
         console.error(err);

@@ -37,17 +37,19 @@ const AddPost = () => {
 
     const releaseNewPost = async () => {
         if(!auth?.user) return console.log("no user");
-        const res = await checkAuth();
-        if(!res) navigate("/login");
+        const check = checkAuth();
+        if(!check) 
+        {
+            return console.log("Logged out!");
+        }
         try {
             const res = await fetch("http://localhost:5000/api/post", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${auth?.Access_token}` 
+                    authorization: `Bearer ${auth?.Access_token}` 
                 },
                 body: JSON.stringify({
-                    user: "67dd8c81626b9972bcd0a824",
                     img: image,
                     title: title,
                     desc: desc,
@@ -56,11 +58,14 @@ const AddPost = () => {
                 })
             });
     
-            if (!res.ok) throw new Error("Failed to create post");
+            if (!res.ok)
+                {
+                    await checkAuth();
+                    return console.log("try again")
+                } 
     
             const data = await res.json();
             console.log("Post created successfully:", data);
-            navigate("/")
         } catch (err) {
             console.error("Error:", err.message);
         }
@@ -68,7 +73,7 @@ const AddPost = () => {
     useEffect(()=>
     {
         checkAuth();
-    })
+    },[])
 
     const clearData = () =>
     {
@@ -134,7 +139,7 @@ const AddPost = () => {
 
                 {/* TinyMCE Editor */}
                 <Editor
-                    apiKey={import.meta.env.TINYMCE_API_KEY} // Get a free API key from TinyMCE or remove for local use
+                    apiKey="7wzviqicot10iby2yyxptg8c2jxraw7l31elsknva1ptcyjp"
                     init={{
                         height: 300,
                         menubar: false,

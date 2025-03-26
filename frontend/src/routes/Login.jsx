@@ -17,7 +17,7 @@ function Login({ func })
 {
     useButtonHoverEffect();
 
-    const {setAuth} = useAuth();
+    const {setAuth,checkAuth} = useAuth();
     
     const userRef = useRef();
     const errRef = useRef();
@@ -36,12 +36,10 @@ function Login({ func })
 
     const [err,setErr] = useState('');
 
-    // Focus on the username input at beg 
     useEffect(()=>
     {
         userRef.current.focus();
     },[]);
-    // Validate username
     useEffect(()=>
     {
         const res = USER_REGEX.test(user);
@@ -93,6 +91,7 @@ function Login({ func })
             const userData = {user,Access_token,roles};
             setAuth(userData);
             localStorage.setItem("auth",JSON.stringify(userData));
+            
             navigate(from,{replace:true});
             
             

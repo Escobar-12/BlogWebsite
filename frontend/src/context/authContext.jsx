@@ -2,10 +2,17 @@ import { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext({});
 
+
+
 export const AuthProvider = ({ children }) => {
     const storedAuth = JSON.parse(localStorage.getItem("auth")) || null;
     const [auth, setAuth] = useState(storedAuth);
     const [loading, setLoading] = useState(true);
+
+    const resetAuth = () => {
+        localStorage.removeItem("auth");
+        setAuth(null);
+    };
 
     const refreshAccessToken = async () => {
         try {
@@ -14,11 +21,12 @@ export const AuthProvider = ({ children }) => {
                 credentials: "include",
             });
 
-            
             const data = await res.json();
-            if (!data?.Access_token) console.log("No access token in data");
 
-            console.log(data)
+            if (!data?.Access_token) 
+                {
+                    return console.log("No access token in data");
+                }
 
             const updatedAuth = {
                 user: data.user,
@@ -33,23 +41,27 @@ export const AuthProvider = ({ children }) => {
 
         } catch (err) {
             console.error("Failed to refresh token", err);
+            resetAuth();
             return null;
         }
     };
 
     const checkAuth = async () => {
+        if(!auth?.user) 
+            {
+                resetAuth();
+                return false
+            }
 
         if (!auth?.Access_token) {
             console.log("refresh...");
             const newAccessToken = await refreshAccessToken();
             if (!newAccessToken) {
                 console.log("Refresh failed");
-                setAuth(null);
-                localStorage.removeItem("auth");
+                resetAuth();
                 return false;
             }
         }
-        console.log(auth?.Access_token)
         try {
             const res = await fetch("http://localhost:5000/api/auth/me", {
                 headers: {
@@ -65,14 +77,16 @@ export const AuthProvider = ({ children }) => {
                 ...auth,
                 user: data.user,
                 roles: data.roles,
+                img: data.profile,
             };
-    
+            
             setAuth(updatedAuth);
             localStorage.setItem("auth", JSON.stringify(updatedAuth));
             return true;
         } catch (error) {
             console.error("Authentication failed, trying refresh...", error);
             console.log("refresh...");
+            resetAuth();
             await refreshAccessToken();
             return false;
         } finally {

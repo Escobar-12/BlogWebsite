@@ -8,7 +8,6 @@ const postSchema = new Schema({
     {
         type: Schema.Types.ObjectId,
         ref: "User",
-        required: true
     },
     img: 
     {
@@ -18,7 +17,9 @@ const postSchema = new Schema({
     title: 
     {
         type: String,
-        required: true
+        required: true,
+        minlength:5,
+        maxlength:30
     },
     slug: 
     {
@@ -34,12 +35,13 @@ const postSchema = new Schema({
     {
         type: String,
         minlength: 10,
-        maxlength: 500,
+        maxlength: 100,
     },
     content: 
     {
         type: String,
-        required: true
+        required: true,
+        minlength:100
     },
     isFeatured: 
     {

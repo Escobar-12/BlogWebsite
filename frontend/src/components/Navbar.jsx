@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { IoMoonSharp } from "react-icons/io5";
 import useAuth from "../hooks/useAuth";
+import UserProfile from "../components/Profile";
 
 const NavBar = () => {
 
@@ -40,7 +41,7 @@ const NavBar = () => {
     };
 
     return (
-        <nav className="h-13 shadow-md">
+        <nav className="relative h-13 shadow-md z-30">
             <div className='relative max-w-[1240px] mx-auto px-4 md:px-8 lg:px-16 flex items-center justify-between h-full'>
                 {/* Title & logo */}
                 <div>
@@ -55,14 +56,16 @@ const NavBar = () => {
                     {
                         !auth?.user
                             ? <ButtonCustom href="/login" label="Sign Up" bold={true} large={false} />
-                            : (<ButtonCustom href="/logout" label="Log out" bold={true} large={false} />)
+                            : ( <UserProfile />) 
                     }
                     
                     {scheme ? (
-                        <IoMoonSharp className="text-xl cursor-pointer" onClick={toggleScheme} />
-                    ) : (
                         <MdOutlineWbSunny className="text-xl cursor-pointer" onClick={toggleScheme} />
+                    ) : (
+                        <IoMoonSharp className="text-xl cursor-pointer" onClick={toggleScheme} />
                     )}
+
+
                 </div>
                 <div className="hidden max-lg:flex z-20">
                     <button onClick={toggleNavbar}>
@@ -83,12 +86,16 @@ const NavBar = () => {
                         }
                     
                         {scheme ? (
-                            <IoMoonSharp className="text-xl cursor-pointer" onClick={toggleScheme} />
-                        ) : (
                             <MdOutlineWbSunny className="text-xl cursor-pointer" onClick={toggleScheme} />
+                        ) : (
+                            <IoMoonSharp className="text-xl cursor-pointer" onClick={toggleScheme} />
                         )}
+
+                        <UserProfile />
+
                     </div>
                 )}
+
             </div>
         </nav>
     );

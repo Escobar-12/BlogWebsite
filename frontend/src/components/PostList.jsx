@@ -37,9 +37,6 @@ const PostList = () => {
                 
             ))}  
         </section>
-
-        
-        
     );
 }
 

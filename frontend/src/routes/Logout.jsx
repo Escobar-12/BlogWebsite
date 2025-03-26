@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 Import navigate hook
+import { useNavigate } from "react-router-dom";
 import ButtonCustom from "../components/CustomButton";
 import Image from "../components/Image";
 import useAuth from "../hooks/useAuth";
 
 const Logout = () => {
     const { setAuth } = useAuth();
-    const navigate = useNavigate(); // 👈 Use navigate
+    const navigate = useNavigate(); 
 
     const handleLogOut = async () => {
         try {
