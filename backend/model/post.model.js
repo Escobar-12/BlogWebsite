@@ -18,8 +18,6 @@ const postSchema = new Schema({
     {
         type: String,
         required: true,
-        minlength:5,
-        maxlength:30
     },
     slug: 
     {
@@ -34,14 +32,11 @@ const postSchema = new Schema({
     desc: 
     {
         type: String,
-        minlength: 10,
-        maxlength: 100,
     },
     content: 
     {
         type: String,
         required: true,
-        minlength:100
     },
     isFeatured: 
     {

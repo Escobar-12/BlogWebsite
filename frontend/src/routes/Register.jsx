@@ -96,9 +96,10 @@ function Register({func})
             const data = await res.json(); 
             const Access_token = data.Access_token;
             const roles = data.role;
+            const img = data.profile;
             setErr("");
 
-            const userData = {user,Access_token,roles};
+            const userData = {user,Access_token,roles,img};
             setAuth(userData);
             localStorage.setItem("auth",JSON.stringify(userData));
             navigate(from,{replace:true});

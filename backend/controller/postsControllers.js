@@ -42,16 +42,18 @@ export const getPost = async (req, res) =>
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
-
-export const addPost = async (req, res) => 
-{
+export const addPost = async (req, res) => {
     try {
         const user = await userModel.findById(req.user.id);
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
+        console.log(req.body)
+        const newPost = new postModel({
+            ...req.body, 
+            user: user._id 
+        });
 
-        const newPost = new postModel(req.body);
         const post = await newPost.save();
 
         await userModel.updateOne(
@@ -128,6 +130,23 @@ export const checkSaved = async (req, res) =>
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
+
+export const getSaved = async (req,res) =>
+{
+    try {
+        const id = req.body.id;
+        if(id !== req.user.id) return res.status(500).json({ success: false, message: "Not allowed" });
+        const user = await userModel.findById(req.user.id);
+        if (!user) 
+        {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        res.status(200).json({ success: true, savedPosts:user.savedPosts });
+    } catch (err) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+}
 
 export const getPostById = async (req, res) =>
 {

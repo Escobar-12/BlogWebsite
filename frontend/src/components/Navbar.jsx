@@ -91,7 +91,11 @@ const NavBar = () => {
                             <IoMoonSharp className="text-xl cursor-pointer" onClick={toggleScheme} />
                         )}
 
-                        <UserProfile />
+                        { auth?.user ?  
+                        (<UserProfile />) :
+                        (<></>)
+                        }
+                        
 
                     </div>
                 )}

@@ -23,11 +23,12 @@ const Categories= ()=>
             <div className="Categories hidden sm:flex bg-white rounded-2xl lg:rounded-full p-3 shadow-lg items-center justify-center gap-4 text-neutral-600">
                 <div className="flex-1 flex items-center justify-between flex-wrap space-y-1">
                     <Link to="/posts" className="bg-[#9614e6] text-white rounded-full px-2 lg:py-1" >All Posts</Link>
-                    <Link to="/posts?category=WebDesign" className="smText cElement rounded-full px-2 lg:py-1" >Web Design</Link>
+                    <Link to="/posts?category=general" className="smText cElement rounded-full px-2 lg:py-1" >General</Link>
+                    <Link to="/posts?category=health" className="smText cElement rounded-full px-2 lg:py-1" >Health</Link>
                     <Link to="/posts?category=Development" className="smText cElement rounded-full px-2 lg:py-1" >Development</Link>
-                    <Link to="/posts?category=SearchEngines" className="smText cElement rounded-full px-2 lg:py-1" >Search Engines</Link>
+                    <Link to="/posts?category=Technology" className="smText cElement rounded-full px-2 lg:py-1" >Technology</Link>
                     <Link to="/posts?category=Marketing" className="smText cElement rounded-full px-2 lg:py-1" >Marketing</Link>
-                    <Link to="/posts?category=Databases" className="smText cElement rounded-full px-2 lg:py-1" >Databases</Link>
+                    <Link to="/posts?category=philosophy" className="smText cElement rounded-full px-2 lg:py-1" >Philosophy</Link>
                 </div>
                 <span className="text-xl font-medium">|</span>
                 <div className="SearchBar bg-[#f3f4f6] p-2 rounded-full flex items-center gap-2">

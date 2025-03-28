@@ -23,7 +23,7 @@ const formatDate = (dateString) => {
 const ListItemPost = ({ post }) => {
     const navigate = useNavigate();
     return (
-        <div className="PostList flex flex-col justify-between h-100 max-w-150 rounded-md shadow-xl cursor-pointer overflow-hidden hover:scale-101 hover:shadow-2xl transition-all duration-200 ease-in-out"
+        <div className="PostList flex flex-col justify-between h-110 max-w-150 rounded-md shadow-xl cursor-pointer overflow-hidden hover:scale-101 hover:shadow-2xl transition-all duration-200 ease-in-out"
             onClick={() => navigate(`/posts/${post.slug}`)}>
             
             <div className="flex flex-col gap-2 px-4 py-4 overflow-hidden">

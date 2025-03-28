@@ -32,6 +32,8 @@ export const AuthProvider = ({ children }) => {
                 user: data.user,
                 Access_token: data.Access_token,
                 roles: data.roles,
+                id: data.id,
+                img: data.img
             };
 
             setAuth(updatedAuth);
@@ -71,13 +73,18 @@ export const AuthProvider = ({ children }) => {
             });
 
             const data = await res.json();
-            if (!res.ok) throw new Error(data.massage);
+            if (!res.ok) 
+                {
+                    await refreshAccessToken();
+                    throw new Error(data.massage);
+                }
     
             const updatedAuth = {
                 ...auth,
                 user: data.user,
                 roles: data.roles,
                 img: data.profile,
+                id:data.id,
             };
             
             setAuth(updatedAuth);
@@ -86,9 +93,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error("Authentication failed, trying refresh...", error);
             console.log("refresh...");
-            resetAuth();
             await refreshAccessToken();
-            return false;
         } finally {
             setLoading(false);
         }

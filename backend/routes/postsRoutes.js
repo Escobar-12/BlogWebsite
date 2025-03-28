@@ -1,6 +1,6 @@
 import express from "express"
 import { postModel } from "../model/post.model.js";
-import { getPosts, getPost, addPost, deletePost, savePost, checkSaved, getPostById } from "../controller/postsControllers.js";
+import { getPosts, getPost, addPost, deletePost, savePost, checkSaved, getPostById, getSaved } from "../controller/postsControllers.js";
 import { verifyAccessToken } from "../middleware/VerifyAuth.js";
 
 const router = express.Router();
@@ -9,10 +9,11 @@ const router = express.Router();
 router.get("/", getPosts);
 router.get("/:slug", getPost);
 router.get("/id/:postId", getPostById);
-router.post("/",verifyAccessToken ,addPost);
+router.post("/add",verifyAccessToken ,addPost);
 router.delete("/:id",deletePost);
 router.post("/save", verifyAccessToken,savePost)
 router.post("/checkSaved", verifyAccessToken,checkSaved)
+router.post("/savedPosts",verifyAccessToken,getSaved)
 
 
 

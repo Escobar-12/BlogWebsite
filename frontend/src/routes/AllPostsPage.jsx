@@ -11,6 +11,7 @@ const PostList = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const initialPage = parseInt(searchParams.get("page")) || 1;
     const [page,setPage] = useState(initialPage); 
+    const [screenSize, setScreenSize] = useState(window.innerWidth <= 768 ? 0 : 1);
 
     useEffect(() => {
         const getAllPosts = async () => {
@@ -20,7 +21,8 @@ const PostList = () => {
                 if (!response.ok) throw new Error("Failed to fetch posts");
 
                 const data = await response.json();
-                setPosts(data.posts);
+                setPosts([]);
+                setPosts(data.posts.reverse());
                 setPageData(data);
                 
             } catch (err) {
@@ -31,6 +33,12 @@ const PostList = () => {
         getAllPosts();
     }, [page,setSearchParams]);
 
+    
+    useEffect(() => {
+        setPosts([]);
+        setPage(1); 
+    }, [searchParams.get("category")]); 
+    
     useEffect(() => {
         setSearchParams(prevParams => {
             const newParams = new URLSearchParams(prevParams);
@@ -60,6 +68,29 @@ const PostList = () => {
             day: "numeric"
         }); 
     };
+
+    {/*Screen Format*/}
+
+    useEffect(()=>
+    {
+        const handleScreenResize = () =>
+        {
+            if(window.innerWidth <= 768)
+            {
+                setScreenSize(0);
+            }
+            else{
+                setScreenSize(1);
+                window.location.reload();
+            }
+        }
+        
+        window.addEventListener("resize", handleScreenResize)
+        return() =>
+        {
+            window.removeEventListener("resize", handleScreenResize)
+        }
+    },[])
 
     {/*Pagination*/}
     const MAX_VISIBLE_PAGES = 5;
@@ -118,7 +149,7 @@ const PostList = () => {
                 <div className="PostList hidden md:flex w-full h-[45vh] shadow-xl rounded-2xl hover:shadow-2xl hover:scale-[101%] transition-all duration-300 overflow-hidden"
                     onClick={() => navigate(`/posts/${posts[0].slug}`)}>
                     <div className="flex-shrink-0 w-full m-3 flex gap-5 items-center">
-                        <Image path={posts[0]?.img} className="object-cover max-w-1/3 h-full rounded-xl" />
+                        <Image path={posts[0].img} className="object-cover max-w-1/3 h-full rounded-xl" />
                         <div className="flex flex-col overflow-hidden">
                             <h1 className="heroHeader text-3xl lg:text-4xl font-extrabold text-gray-800 mb-2 capitalize">
                                 {posts[0]?.title}
@@ -131,7 +162,7 @@ const PostList = () => {
 
             <div>
                 <div className="list space-y-4 max-sm:flex flex-col items-center">
-                    {posts.slice(1).map((post,i) => (
+                    {posts.slice(screenSize).map((post,i) => (
                         <div key={i}>
                             <PostPageList post={post} />
                         </div>

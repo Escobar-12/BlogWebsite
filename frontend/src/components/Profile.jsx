@@ -61,6 +61,11 @@ const UserProfile = () => {
                     <h1 className="text-sm font-bold text-gray-700">
                         Hello, {auth?.user || "Guest"}!
                     </h1>
+
+                    <ButtonCustom href={`/author/${auth?.id}`} label="My Page" bold={true} large={false} onClick={toggleDialog}/>
+
+                    <ButtonCustom href={`/saved/`} label="Saved" bold={true} large={false} onClick={toggleDialog}/>
+
                     <ButtonCustom href="/logout" label="Log out" bold={true} large={false} onClick={toggleDialog}/>
 
                     <button 

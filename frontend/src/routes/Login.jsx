@@ -86,9 +86,11 @@ function Login({ func })
             const data = await res.json(); 
             const Access_token = data.Access_token;
             const roles = data.role;
+            const img = data.profile
+            const id = data.id;
             setErr("");
 
-            const userData = {user,Access_token,roles};
+            const userData = {user,Access_token,roles,img,id};
             setAuth(userData);
             localStorage.setItem("auth",JSON.stringify(userData));
             

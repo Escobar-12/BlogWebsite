@@ -13,6 +13,7 @@ import { userModel } from "./model/userInfo.js";
 import AuthorRouter from "./routes/authorRoutes.js";
 import TodaysRouter from "./routes/todaysPosts.js";
 import { corsOptions } from "./config/corsOrigins.js";
+import imgKitRouter from "./routes/imgKitRouter.js";
 
 
 dotenv.config();
@@ -21,11 +22,12 @@ connectDB();
 
 const Port = process.env.PORT || 4000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser()); 
 app.use(credentials);
 app.use(cors(corsOptions)); 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 
 
@@ -35,6 +37,9 @@ app.get('/hello',VerifyRoles(allowedRoles.Editor,allowedRoles.Admin),(req,res)=>
 {
     res.send("hello");
 })
+
+
+app.use("/api/imgKit",imgKitRouter);
 
 app.get("/users",async (req,res)=>
 {

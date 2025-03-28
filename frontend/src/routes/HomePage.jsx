@@ -24,9 +24,12 @@ const HomePage = ()=>
             
             <div className="flex items-center justify-between gap-6 ">
                 <div>
-                    <h1 className="heroHeader text-gray-800 text-2xl md-text-5xl lg:text-4xl font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</h1>
-                    <p className=" text-gray-600 text-md md:text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                        Illum accusamus pariatur molestiae asperiores est</p>
+                    <h1 className="heroHeader text-gray-800 text-2xl md-text-5xl lg:text-4xl font-semibold my-3">
+                        Lightbi, Unleash Your Voice
+                    </h1>
+                    <p className=" text-gray-600 text-md md:text-xl">
+                        Dive into a world of creativity with Lightbi, your space to share stories, ideas, and inspiration.
+                    </p>
                 </div>
                 {/*animated button*/}
                 <Link className="hidden md:block relative ">

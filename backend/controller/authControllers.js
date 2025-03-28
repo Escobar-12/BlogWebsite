@@ -39,11 +39,15 @@ export const register = async(req,res)=>
             httpOnly: true, 
             maxAge: 24 * 60 * 60 * 1000, 
             sameSite: "Lax", 
-            secure: false
         });
         
         
-        res.status(201).json({ success: true, Access_token, role:newUser.role });
+        res.status(201).json({ 
+            id:newUser._id, 
+            user:name,
+            Access_token: Access_token, 
+            role:newUser.role,
+            profile:newUser.img });
 
     }
     catch (err) {
@@ -85,12 +89,15 @@ export const login = async(req,res)=>
             httpOnly: true, 
             maxAge: 24 * 60 * 60 * 1000, 
             sameSite: "Lax", 
-            secure: false
         });
         
         
-        return res.status(200).json({ success: true, Access_token,role:userFound.role});
-        
+        return res.status(200).json({ 
+            id:userFound._id, 
+            user:userFound.name,
+            Access_token,
+            role:userFound.role,
+            profile:userFound.img});
     }
     catch (err) {
         console.error(err);
@@ -115,11 +122,13 @@ export const refresh = async (req, res) => {
             process.env.ACCESS_TOKEN_SECRET,
             { expiresIn: "10m" }
         );
-
+        const userFoundWithName = await userModel.findOne({name:decoded.name});
         res.json({ 
+            id:decoded.id,
             user: decoded.name,  
             Access_token: newAccessToken, 
-            roles: decoded.role 
+            roles: decoded.role ,
+            profile:userFoundWithName.img
         });
 
     } catch (err) {
@@ -130,11 +139,9 @@ export const refresh = async (req, res) => {
 
 export const logout = async (req, res) => {
     try {
-        res.cookie("jwt", "", { 
-            httpOnly: true, 
-            expires: new Date(0),
+        res.clearCookie("jwt", {
+            httpOnly: true,  
             sameSite: "Lax", 
-            secure: false
         });
 
         return res.status(200).json({ success: true, message: "Logged out successfully" });

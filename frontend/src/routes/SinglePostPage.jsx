@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import MenuActions from "../components/PostMenuActions.jsx";
 import PostSearch from '../components/PostSearch.jsx';
 import { FaSquareFacebook } from "react-icons/fa6";
+import DOMPurify from 'dompurify';
+
 
 import { RiInstagramFill } from "react-icons/ri";
 import { useCallback, useEffect, useState } from 'react';
@@ -100,9 +102,10 @@ const Post = () => {
 
                             {/* Content Section */}
                         <div className='flex flex-col lg:flex-row gap-8 pt-10 '>
-                            <div className='smText lg:text-lg flex flex-col gap-6 text-justify leading-relaxed text-gray-700 w-full lg:max-w-4/5'>
-                                {postData.content}
-                            </div>
+                            <div
+                                className='smText lg:text-lg flex flex-col gap-6 text-justify leading-relaxed text-gray-700 w-full lg:max-w-4/5'
+                                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(postData.content) }}
+                            />
                         </div>
 
                     </div>
@@ -122,7 +125,7 @@ const Post = () => {
 
                         <h2 className='smText text-lg font-semibold mb-4 text-gray-500'>Author</h2>
                         <Link to={`/author/${author.authorId}`} className='flex max-h-30 gap-4 mb-4 cursor-pointer overflow-hidden '>
-                            <Image path={author.profile} className="w-14 h-14 rounded-full object-cover shadow-sm" />
+                            <Image path={author.profile || "user.png"} className="w-14 h-14 rounded-full object-cover shadow-sm" />
                             <div className='flex flex-col text-sm tracking-tight text-gray-700 text-ellipsis overflow-hidden'>
                                 <h1 className='font-semibold text-neutral-400 hover:underline'>{author.name ? author.name : "John Doe"}</h1>
                                 <p className="text-gray-500">{author.desc}</p>
