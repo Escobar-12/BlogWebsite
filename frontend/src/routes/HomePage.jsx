@@ -5,6 +5,7 @@ import Categories from "../components/Categories";
 import Features from "../components/Features";
 import PostList from "../components/PostList";
 import { CiSearch } from "react-icons/ci";
+import AboutLightbi from "../components/aboutSec";
 
 const HomePage = ()=>
 {
@@ -47,8 +48,9 @@ const HomePage = ()=>
 
             <PostList/>
 
-
+            <AboutLightbi/>
         </section>
+        
     );
 }
 export default HomePage;

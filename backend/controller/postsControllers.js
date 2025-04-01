@@ -48,7 +48,6 @@ export const addPost = async (req, res) => {
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
-        console.log(req.body)
         const newPost = new postModel({
             ...req.body, 
             user: user._id 

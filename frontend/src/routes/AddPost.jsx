@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import useAuth from "../hooks/useAuth";
 import { IKContext, IKUpload } from "imagekitio-react";
+import { useNavigate } from "react-router-dom";
 
 let UploadState = "idle" | "uploading" | "success" | "error";
 
 const AddPost = () => {
     const { auth, checkAuth } = useAuth();
+    const navigate = useNavigate();
 
     const urlEndpoint = "https://ik.imagekit.io/zvk2bqqlk/";
     const publicKey = "public_FdHfK7G+IU72rIhgniEYB3S//8M=";
@@ -77,9 +79,8 @@ const AddPost = () => {
             if (!res.ok) {
                 throw new Error("Failed to create post");
             }
-
-            const data = await res.json();
-            console.log("Post created successfully:", data);
+            
+            navigate("/posts");
         } catch (err) {
             console.log(err.message);
         }
@@ -87,7 +88,7 @@ const AddPost = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        releaseNewPost();
+        await releaseNewPost();
     };
 
     const isFormComplete = uploadState === "success" && title && desc && content;
@@ -97,20 +98,23 @@ const AddPost = () => {
             <h1 className="text-2xl font-semibold">Create a New Post</h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <IKContext urlEndpoint={urlEndpoint} publicKey={publicKey} authenticator={ImgKitAuth}>
-                    <IKUpload
-                        fileName="uploaded-image.png"
-                        onUploadStart={() => setUploadState("uploading")} 
-                        onSuccess={(res) => {
-                            setUploadState("success");
-                            setImage(res.name); 
-                        }}
-                        onError={(err) => {
-                            setUploadState("error");
-                            console.log("Image Upload Error:", err);
-                        }}
-                    />
-                </IKContext>
+                <div className="p-2 rounded PostList w-max">
+                    <IKContext urlEndpoint={urlEndpoint} publicKey={publicKey} authenticator={ImgKitAuth} >
+                        <IKUpload
+                            fileName="uploaded-image.png"
+                            onUploadStart={() => setUploadState("uploading")} 
+                            onSuccess={(res) => {
+                                setUploadState("success");
+                                setImage(res.name); 
+                            }}
+                            onError={(err) => {
+                                setUploadState("error");
+                                console.log("Image Upload Error:", err);
+                            }}
+                        />
+                    </IKContext>
+                </div>
+                
 
                 <input
                     type="text"

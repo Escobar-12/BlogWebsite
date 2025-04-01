@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import useButtonHoverEffect from "./ButtonHoverEffect";
 import ButtonCustom from "./CustomButton";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MdOutlineWbSunny } from "react-icons/md";
 import { IoMoonSharp } from "react-icons/io5";
 import useAuth from "../hooks/useAuth";
@@ -11,6 +11,7 @@ import UserProfile from "../components/Profile";
 const NavBar = () => {
 
     const {auth, setAuth} = useAuth();
+    const location = useLocation();
 
     useButtonHoverEffect();
     const [mobileStackOpen, setMobileStackOpen] = useState(false);
@@ -40,6 +41,18 @@ const NavBar = () => {
         });
     };
 
+    useEffect(()=>
+    {
+        if(location?.state?.scrollToAbout)
+        {
+            const about = document.getElementById("about");
+            if(about)
+            {
+                about.scrollIntoView({behavior:"smooth"});
+            }
+        }
+    },[location])
+
     return (
         <nav className="relative h-13 shadow-md z-30">
             <div className='relative max-w-[1240px] mx-auto px-4 md:px-8 lg:px-16 flex items-center justify-between h-full'>
@@ -51,7 +64,7 @@ const NavBar = () => {
                     <Link to={"/"} className="smText text-neutral-500">Home</Link>
                     <Link to={"/addpost"} className="smText text-neutral-500">Create</Link>
                     <Link to={"/posts"} className="smText text-neutral-500">Posts</Link>
-                    <Link className="smText text-neutral-500">About</Link>
+                    <Link to={"/"} className="smText text-neutral-500" state={{scrollToAbout:true}} >About</Link>
 
                     {
                         !auth?.user
@@ -92,10 +105,9 @@ const NavBar = () => {
                         )}
 
                         { auth?.user ?  
-                        (<UserProfile />) :
-                        (<></>)
+                            (<UserProfile />) :
+                            (<></>)
                         }
-                        
 
                     </div>
                 )}
