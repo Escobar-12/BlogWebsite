@@ -6,6 +6,7 @@ import Categories from "../components/Categories";
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [PageData, setPageData] = useState({});
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -14,10 +15,13 @@ const PostList = () => {
     const [screenSize, setScreenSize] = useState(window.innerWidth <= 768 ? 0 : 1);
 
     useEffect(() => {
-        const getAllPosts = async () => {
+        const getAllPosts = async () => 
+        {
             try {
+                setLoading(true);
                 const category = searchParams.get("category") || "";
-                const response = await fetch(`http://localhost:5000/api/post?page=${page}&category=${category}`);
+                const search = searchParams.get("search") || "";
+                const response = await fetch(`http://localhost:5000/api/post?page=${page}&category=${category}&search=${search}`);
                 if (!response.ok) throw new Error("Failed to fetch posts");
 
                 const data = await response.json();
@@ -28,18 +32,24 @@ const PostList = () => {
             } catch (err) {
                 console.error("Error fetching posts:", err);
             }
+            finally
+            {
+                setLoading(false);
+            }
         };
 
         getAllPosts();
     }, [page,setSearchParams]);
 
     
-    useEffect(() => {
+    useEffect(() => 
+    {
         setPosts([]);
         setPage(1); 
     }, [searchParams.get("category")]); 
     
-    useEffect(() => {
+    useEffect(() => 
+    {
         setSearchParams(prevParams => {
             const newParams = new URLSearchParams(prevParams);
             newParams.set("page",page);
@@ -47,19 +57,21 @@ const PostList = () => {
         });
     }, [setSearchParams]);
 
-    useEffect(() => {
+    useEffect(() => 
+    {
         return () => {
             setSearchParams({});
         };
     }, []);
 
     const clipText = (text,maxLength) =>
-        {
-            if(!text) return "";
-            return text.length > maxLength ? text.slice(0,maxLength) + "..." : text;
-        }
+    {
+        if(!text) return "";
+        return text.length > maxLength ? text.slice(0,maxLength) + "..." : text;
+    }
 
-    const formatDate = (dateString) => {
+    const formatDate = (dateString) => 
+    {
         if (!dateString) return "";
         const date = new Date(dateString);
         return date.toLocaleDateString("en-US", {
@@ -77,11 +89,18 @@ const PostList = () => {
         {
             if(window.innerWidth <= 768)
             {
-                setScreenSize(0);
+                setScreenSize((prev)=>
+                {
+                    if(prev !== 0) window.location.reload();
+                    return 0;
+                });
             }
             else{
-                setScreenSize(1);
-                window.location.reload();
+                setScreenSize((prev)=>
+                {
+                    if(prev !== 1) window.location.reload();
+                    return 1;
+                });
             }
         }
         
@@ -137,8 +156,16 @@ const PostList = () => {
 
 
 
-
-    if(posts.length <= 0) return <p className="text-center text-gray-500 col-span-full">No posts available.</p>
+    if(loading) return <p className="text-center text-gray-500 col-span-full mt-10">Loading...</p>
+    if(!loading && posts.length <= 0) 
+        {
+            return(
+                <section className="max-w-[1240px] mx-auto my-10 px-4 md:px-8 space-y-10">
+                    <Categories/>  
+                    <p className="text-center text-gray-500 col-span-full">No posts available.</p>
+                </section>
+            );
+        }
 
     return (
         <section className="max-w-[1240px] mx-auto my-10 px-4 md:px-8 space-y-10">
@@ -146,7 +173,7 @@ const PostList = () => {
             <Categories/>  
 
             {posts.length > 0 && (
-                <div className="PostList hidden md:flex w-full h-[45vh] shadow-xl rounded-2xl hover:shadow-2xl hover:scale-[101%] transition-all duration-300 overflow-hidden"
+                <div className="PostList hidden md:flex w-full h-[45vh] max-h-120 shadow-xl rounded-2xl hover:shadow-2xl hover:scale-[101%] transition-all duration-300 overflow-hidden"
                     onClick={() => navigate(`/posts/${posts[0].slug}`)}>
                     <div className="flex-shrink-0 w-full m-3 flex gap-5 items-center">
                         <Image path={posts[0].img} className="object-cover max-w-1/3 h-full rounded-xl" />

@@ -35,10 +35,6 @@ const AuthorPostList = ({ Post }) => {
         fetchPosts();
     }, [Post]);
 
-    useEffect(()=>
-    {
-        console.log(Post);
-    },[])
 
     if (loading) return <div className="text-center mt-10">Loading...</div>;
     if (!authorPosts || authorPosts.length === 0) 

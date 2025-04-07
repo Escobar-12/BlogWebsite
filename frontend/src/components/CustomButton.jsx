@@ -23,8 +23,8 @@ const ButtonCustom = ({
             <span className={`${large ? "text-xl" : "text-md"} ${bold ? "font-semibold" : ""} z-10`} >
                 {label}
             </span>
-            {imgsrc && <img src={imgsrc} alt="icon" className="z-20 w-5 h-5 border-2 rounded-full border-[#9614e6]" />}
-            {Ricon && <Ricon/>}
+            {imgsrc && <img src={imgsrc} alt="icon" className="z-2 w-5 h-5 border-2 rounded-full border-[#9614e6]" />}
+            {Ricon && <Ricon className="z-1"/>}
         </>
     );
 

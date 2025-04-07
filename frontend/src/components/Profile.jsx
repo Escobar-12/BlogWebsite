@@ -44,7 +44,6 @@ const UserProfile = () => {
 
     return (
         <div className="relative inline-block">
-            {/* Profile Picture */}
             <div className="rounded-full cursor-pointer" onClick={toggleDialog} ref={imageRef}>
                 <Image 
                     path={auth?.img || "user.png"} 
@@ -52,7 +51,6 @@ const UserProfile = () => {
                 />
             </div>
 
-            {/* Profile Dialog Below */}
             <dialog 
                 ref={dialogRef} 
                 className="absolute max-lg:hidden left-1/2 transform -translate-x-1/2 mt-2 w-50 shadow-lg rounded-lg"

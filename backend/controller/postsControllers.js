@@ -3,29 +3,60 @@ import { postModel } from "../model/post.model.js";
 import { userModel } from "../model/userInfo.js";
 
 
-export const getPosts = async (req, res) => 
-{
+export const getPosts = async (req, res) => {
     try {
         const page = isNaN(parseInt(req.query.page)) ? 0 : Math.max(0, parseInt(req.query.page) - 1);
         const category = req.query.category;
+        const query = req.query.search;
         const limit = 15;
-        const totalPosts = category
-            ? await postModel.countDocuments({ subject: category })
-            : await postModel.countDocuments();
-        let posts;
-        if (category) {
-            posts = await postModel.find({ subject: category }).skip(limit * page).limit(5);
-        } else {
-            posts = await postModel.find().skip(limit * page).limit(limit);
+
+        const filter = {};
+
+        if (category) filter.subject = category;
+        if (query) {
+            filter.$or = [
+                { title: { $regex: query, $options: "i" } },
+                { desc: { $regex: query, $options: "i" } },
+            ];
         }
+
+        const totalPosts = await postModel.countDocuments(filter);
+        const posts = await postModel.find(filter).skip(limit * page).limit(limit);
+
         res.status(200).json({
-            success:true,
+            success: true,
             posts,
             totalPosts,
             currentPage: page + 1,
             totalPages: Math.ceil(totalPosts / limit),
         });
     } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
+
+export const getTodayPosts = async (req, res) => 
+{
+    try 
+    {
+        const limit = 10;
+    
+        const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    
+        const posts = await postModel.find({
+            updatedAt: { $gte: oneDayAgo }
+        }).sort({ updatedAt: -1 });
+    
+        res.status(200).json({
+            success: true,
+            posts,
+        });
+    } 
+    catch (err) 
+    {
+        console.error(err); 
         res.status(500).json({ success: false, message: "Server error" });
     }
 };

@@ -61,7 +61,6 @@ const Post = () => {
             finally {
                 setAuthorLoading(false);
             }
-            console.log(author)
         }
 
         getAuthor();
@@ -91,9 +90,9 @@ const Post = () => {
                                 </h1>
                                 <div className='flex items-center gap-3 text-gray-500 text-sm md:text-base'>
                                     <span>Written by</span>
-                                    <Link className="clText  hover:underline">{author.name ? author.name : "John Doe"}</Link>
+                                    <Link to={`/author/${postData.user}`} className="clText  hover:underline">{author.name ? author.name : "John Doe"}</Link>
                                     <span>on</span>
-                                    <Link className="clText hover:underline">{postData.subject || "General"}</Link>
+                                    <Link to={`/posts?category=${postData.subject}&page=1`} className="clText hover:underline">{postData.subject || "General"}</Link>
                                     <span>• 2 days ago</span>
                                 </div>
                             </div>
@@ -115,12 +114,13 @@ const Post = () => {
                         {/*Categories*/}
                         <h2 className='smText text-lg font-semibold mb-4 text-gray-500'>Categories</h2>
                         <div className='smText flex flex-wrap gap-2 text-sm text-neutral-500 mb-10'>
-                            <Link className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>All</Link>
-                            <Link className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Web Design</Link>
-                            <Link className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Development</Link>
-                            <Link className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Databases</Link>
-                            <Link className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Search Engines</Link>
-                            <Link className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Marketing</Link>
+                            <Link to="/posts" className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>All</Link>
+                            <Link to="/posts?category=general" className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>General</Link>
+                            <Link to="/posts?category=health" className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Health</Link>
+                            <Link to="/posts?category=Development" className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Development</Link>
+                            <Link to="/posts?category=Technology" className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Technology</Link>
+                            <Link to="/posts?category=Marketing" className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Marketing</Link>
+                            <Link to="/posts?category=philosophy" className='hover:bg-purple-100 rounded-full px-4 py-2 border-2 border-neutral-300'>Philosophy</Link>
                         </div>
 
                         <h2 className='smText text-lg font-semibold mb-4 text-gray-500'>Author</h2>
